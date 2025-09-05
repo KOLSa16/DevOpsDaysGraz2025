@@ -16,3 +16,8 @@ jobs:
           dotnet-version: '8.0.x'
       - name: Run Core.Test
         run: dotnet test .\src\DevOpsDaysTasks.Core.Tests
+      - name: Run Integration-Testst
+        run: dotnet test .\src\DevOpsDaysTasks.IntegrationTests
+
+      - name: Run Publish
+        run: dotnet publish -c Release src\DevOpsDaysTasks.UI\ -o DevOpsDaysTasks /p:Version=<version> /p:VersionName=<versionName>
