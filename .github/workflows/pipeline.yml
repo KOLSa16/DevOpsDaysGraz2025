@@ -24,18 +24,25 @@ jobs:
       - name: Run Publish
         run: dotnet publish -c Release src\DevOpsDaysTasks.UI\ -o DevOpsDaysTasks /p:Version=1.0.1 /p:VersionName=TST
       
+      - name: Checkout external Files
+      - uses: actions/checkout@v4
+        with:
+          repository: martinzimmermann/DevOpsDaysGraz2025-ExternalFiles
+          path: ExternalFiles
+
+
       - name: prepare further env
         run: |
           mkdir .\DevOpsDaysTasks\Templates\
           mkdir .\DevOpsDaysTasks\TemplaHelptes\
-          cp workshop_material\Help.pdf .\DevOpsDaysTasks\TemplaHelptes\
-          cp workshop_material\default-tasks.xml .\DevOpsDaysTasks\Templates\
+          cp ExternalFiles\Help.pdf .\DevOpsDaysTasks\TemplaHelptes\
+          cp ExternalFiles\default-tasks.xml .\DevOpsDaysTasks\Templates\
 
       - name: Create Cert
         run: |
           $base64 = "${{secrets.SIGN_CERT_PFX_BASE64}}"
           $content = [System.Convert]::FromBase64String($base64)
-          Set-Content "${{env.CERT_NAME}}" -Value $content - AsByteStream
+          Set-Content "${{env.CERT_NAME}}" -Value $content -AsByteStream
 
       - name: Sign Release
         run: .\scripts\sign.ps1 .\DevOpsDaysTasks\DevOpsDaysTasks.UI.exe -PfxFile "${{env.CERT_NAME}}" -PfxPassword "${{secrets.SIGN_CERT_SECRET}}"
