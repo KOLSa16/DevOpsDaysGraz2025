@@ -38,7 +38,7 @@ jobs:
           Set-Content "${{env.CERT_NAME}}" -Value $content - AsByteStream
 
       - name: Sign Release
-        run: .\scripts\sign.ps1 .\DevOpsDaysTasks\DevOpsDaysTasks.UI.exe -PfxFile "${{env.CERT_NAME}}" -PfxPassword Password
+        run: .\scripts\sign.ps1 .\DevOpsDaysTasks\DevOpsDaysTasks.UI.exe -PfxFile "${{env.CERT_NAME}}" -PfxPassword "${{secrets.SIGN_CERT_SECRET}}"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
