@@ -9,6 +9,9 @@ on:
         reqired: true
         type: string
 
+permissions:
+  contents: write
+
 jobs:
   relese-pipeline:
     name: Release Pipeline\
